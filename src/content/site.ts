@@ -25,7 +25,7 @@ export const site = {
    * Official logo files. Leave null to use the temporary text wordmark.
    * Drop the SVGs into /public/brand and set e.g. "/brand/mia-robotics.svg".
    */
-  logo: null as null | { light: string; dark?: string; width: number; height: number },
+  logo: { light: "/brand/mia-robotics-white.png", width: 258, height: 28 } as null | { light: string; dark?: string; width: number; height: number },
 
   /**
    * The client's illustrated front view tilt animation (video). While null, the schematic is shown.

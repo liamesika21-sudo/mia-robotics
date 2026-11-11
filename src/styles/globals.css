@@ -524,8 +524,17 @@ main:focus {
   gap: 22px;
 }
 .logo-img {
-  height: 28px;
+  display: block;
+  height: 26px;
   width: auto;
+}
+.site-footer .logo-img {
+  height: 30px;
+}
+@media (max-width: 700px) {
+  .site-header .logo-img {
+    height: 21px;
+  }
 }
 
 .lang {

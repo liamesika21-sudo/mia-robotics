@@ -105,7 +105,17 @@ export function Logo({ tone = "light" }: { tone?: "light" | "dark" }) {
   );
 }
 
-/** Temporary MIA Dynamics wordmark — replace with the official vector file once supplied. */
+/** Official MIA Dynamics logo, linking to the parent company site. */
+export function DynamicsLogo({ className = "" }: { className?: string }) {
+  return (
+    <a href={site.dynamicsUrl} target="_blank" rel="noopener noreferrer" className={`dyn-logo ${className}`} aria-label="MIA Dynamics (opens in a new tab)">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/brand/mia-dynamics-white.png" alt="MIA Dynamics" width={360} height={121} />
+    </a>
+  );
+}
+
+/** Legacy text wordmark (no longer used). */
 export function DynamicsMark({ tone = "dark" }: { tone?: "light" | "dark" }) {
   return (
     <span className={`dyn-mark dyn-mark--${tone}`} dir="ltr">

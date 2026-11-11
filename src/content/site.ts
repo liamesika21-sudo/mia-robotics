@@ -33,5 +33,11 @@ export const site = {
    */
   tiltIllustration: null as null | { src: string; poster?: string },
 
+  /** Public contact email shown in the closing "See it in the field" section. Empty = not shown. */
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "",
+
+  /** Parent company site (opened from the MIA Dynamics logo). */
+  dynamicsUrl: "https://miadynamics.com/",
+
   investorsEmail: process.env.NEXT_PUBLIC_INVESTORS_EMAIL || "",
 };

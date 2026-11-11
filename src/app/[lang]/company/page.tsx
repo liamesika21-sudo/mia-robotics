@@ -5,7 +5,7 @@ import { site } from "@/content/site";
 import { href, isLocale, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 import Reveal from "@/components/Reveal";
-import { Button, DynamicsMark, Logo, Title } from "@/components/ui";
+import { Button, DynamicsLogo, Logo, Title } from "@/components/ui";
 import { TeamGrid } from "@/components/sections";
 
 type Props = { params: Promise<{ lang: string }> };
@@ -52,7 +52,7 @@ export default async function CompanyPage({ params }: Props) {
           </Reveal>
           <Reveal className="relation" delay={100}>
             <div className="relation__node">
-              <DynamicsMark tone="light" />
+              <DynamicsLogo />
               <span>{C.group.parentRole}</span>
             </div>
             <div className="relation__link" aria-hidden="true">

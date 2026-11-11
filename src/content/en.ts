@@ -75,14 +75,14 @@ const en = {
     body: "Our adaptive tilt system keeps the top platform level while the chassis climbs, crosses and turns, so sensors, masts and cargo stay stable where it matters.",
     steps: [
       { n: "01", t: "Approach", d: "One side of the robot meets a step." },
-      { n: "02", t: "Chassis tilts sideways", d: "The wheels on that side climb and the chassis rolls with the ground." },
-      { n: "03", t: "Platform stays level", d: "The mission platform holds the horizontal." },
+      { n: "02", t: "Wheel climbs", d: "That wheel rises on its suspension arms and stays upright." },
+      { n: "03", t: "Body stays level", d: "The body and the mission deck hold the horizontal." },
     ],
     levelRef: "Level",
     platform: "Level payload",
-    chassis: "Chassis rolls with the terrain",
+    chassis: "Wheels follow the terrain. The body stays level.",
     svgTitle:
-      "Front view diagram: MIA R drives forward and the wheels on one side climb a step. The chassis tilts sideways while the upper platform stays level with the horizontal reference line.",
+      "Front view diagram: MIA R drives forward and the wheel on one side climbs a step. That wheel rises on its suspension arms and both wheels stay upright, while the body and its top deck stay level with the horizontal reference line.",
     fieldAlt: "MIA R crossing uneven ground",
   },
 
@@ -139,6 +139,7 @@ const en = {
     title: ["See it in", "the field."],
     accentFrom: 1,
     body: "Book a live demonstration with our team.",
+    emailLabel: "Or write to us",
   },
 
   platform: {
@@ -150,13 +151,13 @@ const en = {
       title: ["Built around", "adaptive tilt."],
       accentFrom: 1,
       body: [
-        "On uneven ground the chassis and the upper platform behave as two separate structures. When the wheels on one side climb a step or a slope, the chassis tilts sideways and keeps all four wheels on the ground.",
-        "The upper platform stays level. Sensors, masts and cargo mounted on top see a stable horizontal, so the mission equipment keeps working while the robot moves.",
+        "Each wheel is carried on its own suspension arms. When a wheel on one side climbs a step or a slope, it rises on its arms and stays upright, so all four wheels keep their grip on the ground.",
+        "The body and the top deck stay level. Sensors, masts and cargo mounted on top see a stable horizontal, so the mission equipment keeps working while the robot moves.",
       ],
       parts: [
-        { k: "A", t: "Upper platform", d: "Mission mounting surface. Held level." },
-        { k: "B", t: "Tilt mechanism", d: "Connects platform and chassis." },
-        { k: "C", t: "Chassis", d: "Tilts sideways with the terrain." },
+        { k: "A", t: "Top deck", d: "Mission mounting surface. Held level." },
+        { k: "B", t: "Suspension arms", d: "Let each wheel rise and drop on its own." },
+        { k: "C", t: "Wheels", d: "Stay upright and follow the terrain." },
       ],
     },
     steering: {

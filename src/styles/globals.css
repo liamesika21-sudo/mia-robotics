@@ -1459,7 +1459,7 @@ main:focus {
   color: var(--text-2);
   max-width: 32em;
 }
-.backed__copy .dyn-mark {
+.backed__copy .dyn-logo {
   margin-top: 30px;
 }
 .group__body .lead {
@@ -1652,6 +1652,49 @@ main:focus {
   -webkit-text-stroke: 1px rgba(0, 213, 204, 0.16);
   pointer-events: none;
   user-select: none;
+}
+.final__type {
+  inset-inline-end: 2%;
+  font-size: clamp(170px, 24vw, 420px);
+  white-space: nowrap;
+  background: linear-gradient(180deg, rgba(0, 213, 204, 0.55) 0%, rgba(0, 213, 204, 0.12) 75%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 1.5px rgba(0, 213, 204, 0.75);
+}
+.final__mail {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  font-size: 15px;
+  color: var(--text-2);
+}
+.final__mail a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+}
+.final__mail a:hover {
+  color: var(--accent);
+}
+.dyn-logo {
+  display: inline-block;
+  transition: opacity 0.25s;
+}
+.dyn-logo img {
+  display: block;
+  height: 54px;
+  width: auto;
+}
+.dyn-logo:hover {
+  opacity: 0.75;
+}
+.relation__node .dyn-logo img {
+  height: 46px;
 }
 .final__lines {
   position: absolute;
@@ -2628,9 +2671,15 @@ main:focus {
   .backed__foot {
     margin-top: 36px;
   }
+  .final {
+    padding-top: calc(36vw + 64px);
+  }
   .final__type {
-    font-size: 46vw;
-    top: 22%;
+    font-size: 36vw;
+    top: 40px;
+    transform: none;
+    inset-inline-end: auto;
+    inset-inline-start: var(--gutter);
   }
   .site-footer__cols {
     gap: 48px;

@@ -7,7 +7,7 @@ import CinematicHero from "@/components/CinematicHero";
 import ProductVideoSection from "@/components/ProductVideoSection";
 import AdaptiveTiltExplainer from "@/components/AdaptiveTiltExplainer";
 import SteeringComparison from "@/components/SteeringComparison";
-import { BackedSection, ChallengeSection, FinalCTA, MissionApplicationsGrid, PayloadStrip, SteeringSection } from "@/components/sections";
+import { BackedSection, ChallengeSection, FinalCTA, MissionApplicationsGrid, SteeringSection, TechnologyCapabilities } from "@/components/sections";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -35,7 +35,7 @@ export default async function Home({ params }: Props) {
           labels={{ standard: s.standard, mia: s.mia, radius: s.radius, robot: s.robot, scale: s.scale, replay: s.replay, title: s.svgTitle }}
         />
       </SteeringSection>
-      <PayloadStrip t={t.payload} />
+      <TechnologyCapabilities t={t.platform.capabilities} />
       <MissionApplicationsGrid t={t.missions} />
       <BackedSection t={t.backed} />
       <FinalCTA t={t.finalCta} cta={t.common.requestDemo} ctaHref={demo} />

@@ -5,7 +5,7 @@ import { specs } from "@/content/specs";
 import { team } from "@/content/team";
 import type { Locale } from "@/lib/i18n";
 import Reveal from "./Reveal";
-import { Button, DynamicsMark, Title } from "./ui";
+import { Button, DynamicsLogo, Title } from "./ui";
 
 /* ───────── Home ───────── */
 
@@ -136,7 +136,7 @@ export function BackedSection({ t }: { t: Dict["backed"] }) {
         </Reveal>
         <Reveal className="backed__copy" delay={120}>
           <p className="lead">{t.body}</p>
-          <DynamicsMark tone="light" />
+          <DynamicsLogo />
         </Reveal>
       </div>
     </section>
@@ -144,6 +144,7 @@ export function BackedSection({ t }: { t: Dict["backed"] }) {
 }
 
 export function FinalCTA({ t, cta, ctaHref }: { t: Dict["finalCta"]; cta: string; ctaHref: string }) {
+  const email = site.contactEmail;
   return (
     <section className="section section--black final" aria-labelledby="final-title">
       <span className="final__type" aria-hidden="true" dir="ltr">MIA R</span>
@@ -155,6 +156,14 @@ export function FinalCTA({ t, cta, ctaHref }: { t: Dict["finalCta"]; cta: string
           <div className="btn-row">
             <Button href={ctaHref}>{cta}</Button>
           </div>
+          {email && (
+            <p className="final__mail">
+              <span>{t.emailLabel}</span>
+              <a href={`mailto:${email}`} dir="ltr">
+                {email}
+              </a>
+            </p>
+          )}
         </Reveal>
       </div>
     </section>

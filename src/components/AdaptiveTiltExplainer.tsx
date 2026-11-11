@@ -16,7 +16,7 @@ export default function AdaptiveTiltExplainer({ t, cta, ctaHref }: { t: Dict["ti
   const reduce = usePrefersReducedMotion();
   const live = useScrollProgress(wrap, "sticky", reduce);
   const p = reduce ? 0.6 : live;
-  const step = p < 0.12 ? 0 : p < 0.45 ? 1 : 2;
+  const step = p < 0.14 ? 0 : p < 0.5 ? 1 : 2;
 
   return (
     <section ref={wrap} className={`section section--charcoal tilt${reduce ? " is-static" : ""}`} aria-labelledby="tilt-title">

@@ -3,8 +3,8 @@
 import { useRef } from "react";
 import type { Dict } from "@/content";
 import { useScrollProgress, usePrefersReducedMotion } from "@/lib/useScrollProgress";
-import TiltDiagram from "./TiltDiagram";
-import { Button, SectionLabel, Title } from "./ui";
+import TiltVisual from "./TiltVisual";
+import { Button, Title } from "./ui";
 
 /**
  * Home §04 — scroll-driven explanation. The section is taller than the viewport and the
@@ -15,15 +15,14 @@ export default function AdaptiveTiltExplainer({ t, cta, ctaHref }: { t: Dict["ti
   const wrap = useRef<HTMLElement>(null);
   const reduce = usePrefersReducedMotion();
   const live = useScrollProgress(wrap, "sticky", reduce);
-  const p = reduce ? 0.34 : live;
-  const step = p < 0.08 ? 0 : p < 0.2 ? 1 : 2;
+  const p = reduce ? 0.6 : live;
+  const step = p < 0.12 ? 0 : p < 0.45 ? 1 : 2;
 
   return (
     <section ref={wrap} className={`section section--charcoal tilt${reduce ? " is-static" : ""}`} aria-labelledby="tilt-title">
       <div className="tilt__pin">
         <div className="container tilt__grid">
           <div className="tilt__copy">
-            <SectionLabel>{t.label}</SectionLabel>
             <p className="kicker">{t.kicker}</p>
             <Title lines={t.title} accentFrom={t.accentFrom} id="tilt-title" />
             <p className="body-l">{t.body}</p>
@@ -46,15 +45,13 @@ export default function AdaptiveTiltExplainer({ t, cta, ctaHref }: { t: Dict["ti
 
           <figure className="diagram diagram--dark">
             <span className="diagram__corner" aria-hidden="true" />
-            <figcaption className="diagram__tag">{t.diagramTag}</figcaption>
-            <TiltDiagram
+            <TiltVisual
               progress={p}
               labels={{ levelRef: t.levelRef, platform: t.platform, chassis: t.chassis, title: t.svgTitle }}
             />
             <div className="diagram__progress" aria-hidden="true">
               <span style={{ transform: `scaleX(${p})` }} />
             </div>
-            <p className="diagram__note">{t.diagramNote}</p>
           </figure>
         </div>
       </div>

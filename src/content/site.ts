@@ -21,5 +21,17 @@ export const site = {
   /** Team grid stays hidden until names, roles AND approved photos exist (see content/team.ts). */
   teamApproved: false,
 
+  /**
+   * Official logo files. Leave null to use the temporary text wordmark.
+   * Drop the SVGs into /public/brand and set e.g. "/brand/mia-robotics.svg".
+   */
+  logo: null as null | { light: string; dark?: string; width: number; height: number },
+
+  /**
+   * The client's illustrated front view tilt animation (video). While null, the schematic is shown.
+   * Example: { src: "/video/tilt-front.mp4", poster: "/images/tilt-front.webp" }
+   */
+  tiltIllustration: null as null | { src: string; poster?: string },
+
   investorsEmail: process.env.NEXT_PUBLIC_INVESTORS_EMAIL || "",
 };

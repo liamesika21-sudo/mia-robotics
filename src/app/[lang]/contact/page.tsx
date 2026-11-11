@@ -4,7 +4,7 @@ import { getDict } from "@/content";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 import DemoRequestForm from "@/components/DemoRequestForm";
-import { SectionLabel, Title } from "@/components/ui";
+import { Title } from "@/components/ui";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -23,7 +23,6 @@ export default async function ContactPage({ params }: Props) {
       <span className="final__lines" aria-hidden="true" />
       <div className="container contact__grid">
         <div className="contact__intro">
-          <SectionLabel className="label--light">{t.label}</SectionLabel>
           <Title as="h1" lines={t.title} accentFrom={t.accentFrom} id="contact-title" />
           <p className="lead">{t.body}</p>
           <ul className="contact__aside">

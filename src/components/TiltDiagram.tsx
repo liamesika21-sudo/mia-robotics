@@ -1,32 +1,20 @@
 /**
- * Side-view schematic of the adaptive tilt principle.
- * Pure render: the caller supplies `progress` (0 → 1 = robot position along the terrain).
- * Geometry is illustrative only — no real angles or dimensions are implied.
+ * FRONT VIEW schematic of the adaptive tilt principle (side to side roll).
+ * MIA R drives toward the viewer; the wheels on one side climb a step, the chassis
+ * rolls with the ground, the upper platform stays level.
+ * Pure render: the caller supplies `progress` (0 → 1). Illustrative only, no real angles.
  */
 
 const W = 800;
 const H = 440;
-const WHEELBASE = 210;
-const R = 30;
+const GROUND = 384;
+const TRACK = 380; // distance between wheel centres (front view)
+const WHEEL_W = 62;
+const WHEEL_H = 132;
+const STEP = 74; // step height
 
-// Terrain profile: flat → ramp up → plateau → ramp down → flat.
-const profile: [number, number][] = [
-  [0, 360],
-  [240, 360],
-  [400, 292],
-  [520, 292],
-  [640, 360],
-  [800, 360],
-];
-
-function groundY(x: number) {
-  for (let i = 0; i < profile.length - 1; i++) {
-    const [x0, y0] = profile[i];
-    const [x1, y1] = profile[i + 1];
-    if (x >= x0 && x <= x1) return y0 + ((x - x0) / (x1 - x0)) * (y1 - y0);
-  }
-  return profile[profile.length - 1][1];
-}
+const clamp = (v: number) => Math.min(1, Math.max(0, v));
+const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
 
 function rot(x: number, y: number, a: number): [number, number] {
   return [x * Math.cos(a) - y * Math.sin(a), x * Math.sin(a) + y * Math.cos(a)];
@@ -45,101 +33,135 @@ export default function TiltDiagram({
   showParts?: boolean;
   tone?: "dark" | "light";
 }) {
-  const p = Math.min(1, Math.max(0, progress));
-  const cx = 130 + p * 550;
-  const rx = cx - WHEELBASE / 2;
-  const fx = cx + WHEELBASE / 2;
-  const ry = groundY(rx) - R;
-  const fy = groundY(fx) - R;
-  const a = Math.atan2(fy - ry, WHEELBASE);
-  const mx = (rx + fx) / 2;
-  const my = (ry + fy) / 2;
+  const p = clamp(progress);
+  // 0–0.12 approach · 0.12–0.5 left wheels climb the step · then hold
+  const lift = ease(clamp((p - 0.12) / 0.38)) * STEP;
+  // the step slides in under the left wheels during the approach
+  const stepIn = ease(clamp(p / 0.14));
+
+  const cx = W / 2;
+  const lx = cx - TRACK / 2;
+  const rx = cx + TRACK / 2;
+  const ly = GROUND - WHEEL_H / 2 - lift;
+  const ry = GROUND - WHEEL_H / 2;
+  const a = Math.atan2(ry - ly, TRACK);
+  const mx = (lx + rx) / 2;
+  const my = (ly + ry) / 2;
   const deg = (a * 180) / Math.PI;
 
-  // Chassis top pivot points (local coords → world).
-  const top = (lx: number): [number, number] => {
-    const [x, y] = rot(lx, -62, a);
-    return [mx + x, my + y];
+  const BODY_TOP = -112;
+  const top = (x: number): [number, number] => {
+    const [px, py] = rot(x, BODY_TOP, a);
+    return [mx + px, my + py];
   };
   const pivot = top(0);
-  const platY = pivot[1] - 40;
+  const platY = pivot[1] - 46;
   const platX = pivot[0];
-  const supL = top(-62);
-  const supR = top(62);
+  const supL = top(-78);
+  const supR = top(78);
 
-  const groundPts = profile.map(([x, y]) => `${x},${y}`).join(" ");
-  const ink = tone === "dark" ? "#c9d6d8" : "#3e5155";
-  const body = tone === "dark" ? "#1d2629" : "#1b2427";
-  const wheel = tone === "dark" ? "#7f8f92" : "#7f8f92";
-  const groundCol = tone === "dark" ? "#46585c" : "#4d6064";
+  const dark = tone === "dark";
+  const ink = dark ? "#c9d6d8" : "#3e5155";
+  const groundCol = dark ? "#4b5e62" : "#55696d";
+  const tyre = dark ? "#6f8084" : "#6f8084";
   const accent = "#00D5CC";
+  const stepX = lx - 92;
+  const stepW = 150;
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="tilt-svg" role="img" aria-labelledby="tilt-svg-title">
       <title id="tilt-svg-title">{labels.title}</title>
       <defs>
-        <linearGradient id="tiltBody" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor={tone === "dark" ? "#28353a" : "#2a383c"} />
-          <stop offset="1" stopColor={body} />
+        <linearGradient id="tiltBody" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stopColor={dark ? "#2d3b40" : "#2f3d41"} />
+          <stop offset="1" stopColor="#141c1f" />
         </linearGradient>
-        <pattern id="tiltHatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="8" stroke={groundCol} strokeWidth="1" opacity=".35" />
+        <pattern id="tiltHatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="9" stroke={groundCol} strokeWidth="1" opacity=".45" />
         </pattern>
       </defs>
 
-      {/* Ground */}
-      <polygon points={`${groundPts} 800,440 0,440`} fill="url(#tiltHatch)" />
-      <polyline points={groundPts} fill="none" stroke={groundCol} strokeWidth="4" strokeLinejoin="round" />
+      {/* Ground + step */}
+      <rect x="0" y={GROUND} width={W} height={H - GROUND} fill="url(#tiltHatch)" />
+      <g transform={`translate(${-(1 - stepIn) * 260} 0)`} opacity={stepIn}>
+        <rect x={stepX} y={GROUND - STEP} width={stepW} height={STEP} fill="url(#tiltHatch)" stroke={groundCol} strokeWidth="3" />
+      </g>
+      <line x1="0" x2={W} y1={GROUND} y2={GROUND} stroke={groundCol} strokeWidth="4" />
 
-      {/* Level reference — always horizontal */}
-      <line x1="24" x2={W - 24} y1={platY} y2={platY} stroke={accent} strokeWidth="1.5" strokeDasharray="7 7" opacity=".9" />
-      <text x={W - 24} y={platY - 12} textAnchor="end" className="tilt-svg__ref" fill={accent}>
+      {/* Level reference (always horizontal) */}
+      <line x1="30" x2={W - 30} y1={platY} y2={platY} stroke={accent} strokeWidth="1.5" strokeDasharray="7 7" opacity=".85" />
+      <text x={W - 30} y={platY - 12} textAnchor="end" className="tilt-svg__ref" fill={accent}>
         {labels.levelRef}
       </text>
 
-      {/* Chassis + wheels */}
+      {/* Chassis, suspension and wheels (roll together) */}
       <g transform={`translate(${mx} ${my}) rotate(${deg})`}>
-        <line x1="-240" x2="240" y1="-37" y2="-37" stroke={ink} strokeWidth="1" strokeDasharray="3 5" opacity=".45" />
-        <rect x="-140" y="-62" width="280" height="50" rx="8" fill="url(#tiltBody)" stroke={ink} strokeOpacity=".35" />
-        <rect x="-126" y="-52" width="70" height="28" rx="3" fill="none" stroke={ink} strokeOpacity=".18" />
-        <rect x="56" y="-52" width="70" height="28" rx="3" fill="none" stroke={ink} strokeOpacity=".18" />
-        {[-WHEELBASE / 2, WHEELBASE / 2].map((x) => (
-          <g key={x}>
-            <circle cx={x} cy="0" r={R} fill={wheel} />
-            <circle cx={x} cy="0" r={R - 9} fill="#111719" />
-            <circle cx={x} cy="0" r="4" fill={wheel} />
+        <line x1="-300" x2="300" y1={BODY_TOP} y2={BODY_TOP} stroke={ink} strokeWidth="1" strokeDasharray="3 6" opacity=".45" />
+        {/* suspension arms */}
+        {[-1, 1].map((s) => (
+          <g key={s} stroke={ink} strokeOpacity=".55" strokeWidth="5" strokeLinecap="round">
+            <line x1={s * 70} y1="-22" x2={s * (TRACK / 2 - 20)} y2="-14" />
+            <line x1={s * 70} y1="12" x2={s * (TRACK / 2 - 20)} y2="10" />
+          </g>
+        ))}
+        {/* angular body, as seen from the front */}
+        <polygon
+          points={`-118,${BODY_TOP} 118,${BODY_TOP} 132,-60 96,30 -96,30 -132,-60`}
+          fill="url(#tiltBody)"
+          stroke={ink}
+          strokeOpacity=".4"
+          strokeWidth="1.5"
+        />
+        <polygon points={`-70,-92 70,-92 60,10 -60,10`} fill="none" stroke={ink} strokeOpacity=".15" />
+        {/* fender wings */}
+        {[-1, 1].map((s) => (
+          <polygon
+            key={`f${s}`}
+            points={`${s * 118},${BODY_TOP} ${s * (TRACK / 2 + 44)},${BODY_TOP - 22} ${s * (TRACK / 2 + 40)},${BODY_TOP - 6} ${s * 128},-74`}
+            fill="#1a2427"
+            stroke={ink}
+            strokeOpacity=".35"
+          />
+        ))}
+        {/* wheels */}
+        {[-1, 1].map((s) => (
+          <g key={`w${s}`} transform={`translate(${s * (TRACK / 2)} 0)`}>
+            <rect x={-WHEEL_W / 2} y={-WHEEL_H / 2} width={WHEEL_W} height={WHEEL_H} rx="18" fill={tyre} />
+            {Array.from({ length: 7 }).map((_, i) => (
+              <line key={i} x1={-WHEEL_W / 2 + 6} x2={WHEEL_W / 2 - 6} y1={-WHEEL_H / 2 + 14 + i * 17} y2={-WHEEL_H / 2 + 14 + i * 17} stroke="#111719" strokeOpacity=".5" strokeWidth="5" />
+            ))}
           </g>
         ))}
       </g>
 
-      {/* Tilt mechanism supports */}
-      <line x1={platX - 62} y1={platY + 6} x2={supL[0]} y2={supL[1]} stroke={accent} strokeWidth="3" strokeLinecap="round" />
-      <line x1={platX + 62} y1={platY + 6} x2={supR[0]} y2={supR[1]} stroke={accent} strokeWidth="3" strokeLinecap="round" />
-      <circle cx={pivot[0]} cy={pivot[1]} r="5" fill="#030607" stroke={accent} strokeWidth="2" />
+      {/* Tilt mechanism */}
+      <line x1={platX - 78} y1={platY + 6} x2={supL[0]} y2={supL[1]} stroke={accent} strokeWidth="3" strokeLinecap="round" />
+      <line x1={platX + 78} y1={platY + 6} x2={supR[0]} y2={supR[1]} stroke={accent} strokeWidth="3" strokeLinecap="round" />
       <line x1={platX} y1={platY + 6} x2={pivot[0]} y2={pivot[1]} stroke={accent} strokeWidth="2" opacity=".6" />
+      <circle cx={pivot[0]} cy={pivot[1]} r="6" fill="#030607" stroke={accent} strokeWidth="2" />
 
       {/* Level platform with a sensor mast */}
       <g transform={`translate(${platX} ${platY})`}>
-        <rect x="-150" y="-4" width="300" height="10" rx="2" fill={accent} />
-        <line x1="-150" x2="-150" y1="-14" y2="16" stroke={accent} strokeWidth="2" />
-        <line x1="150" x2="150" y1="-14" y2="16" stroke={accent} strokeWidth="2" />
-        <rect x="70" y="-34" width="34" height="30" rx="2" fill="none" stroke={accent} strokeWidth="2" />
-        <line x1="87" x2="87" y1="-34" y2="-66" stroke={accent} strokeWidth="2" />
-        <circle cx="87" cy="-70" r="4" fill={accent} />
-        <text x="-60" y="-16" textAnchor="middle" className="tilt-svg__plat" fill={accent}>
+        <rect x="-170" y="-4" width="340" height="10" rx="2" fill={accent} />
+        <line x1="-170" x2="-170" y1="-14" y2="16" stroke={accent} strokeWidth="2" />
+        <line x1="170" x2="170" y1="-14" y2="16" stroke={accent} strokeWidth="2" />
+        <rect x="-17" y="-36" width="34" height="32" rx="2" fill="none" stroke={accent} strokeWidth="2" />
+        <line x1="0" x2="0" y1="-36" y2="-72" stroke={accent} strokeWidth="2" />
+        <circle cx="0" cy="-76" r="4" fill={accent} />
+        <text x="-150" y="-16" className="tilt-svg__plat" fill={accent}>
           {labels.platform}
         </text>
       </g>
 
       {showParts && (
-        <g className="tilt-svg__parts" fontSize="13">
-          <PartTag x={platX - 150} y={platY - 40} k="A" ink={ink} />
-          <PartTag x={supL[0] - 34} y={(platY + supL[1]) / 2} k="B" ink={ink} />
-          <PartTag x={mx - 175} y={my - 30} k="C" ink={ink} />
+        <g fontSize="13">
+          <PartTag x={platX + 196} y={platY} k="A" ink={ink} />
+          <PartTag x={supR[0] + 34} y={(platY + supR[1]) / 2 + 6} k="B" ink={ink} />
+          <PartTag x={rx + 62} y={ry - 50} k="C" ink={ink} />
         </g>
       )}
 
-      <text x="24" y={H - 18} className="tilt-svg__note" fill={ink} opacity=".7">
+      <text x="30" y={H - 18} className="tilt-svg__note" fill={ink} opacity=".75">
         {labels.chassis}
       </text>
     </svg>
@@ -149,8 +171,8 @@ export default function TiltDiagram({
 function PartTag({ x, y, k, ink }: { x: number; y: number; k: string; ink: string }) {
   return (
     <g transform={`translate(${x} ${y})`}>
-      <circle r="12" fill="#030607" stroke={ink} strokeOpacity=".6" />
-      <text textAnchor="middle" dy="4.5" fill={ink} fontWeight="700">
+      <circle r="13" fill="#030607" stroke={ink} strokeOpacity=".6" />
+      <text textAnchor="middle" dy="4.5" fill="#fff" fontWeight="700">
         {k}
       </text>
     </g>

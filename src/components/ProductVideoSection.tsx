@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Dict } from "@/content";
-import { SectionLabel, Title, PlayGlyph } from "./ui";
+import { Title, PlayGlyph } from "./ui";
 import Reveal from "./Reveal";
 
 /**
@@ -26,7 +26,6 @@ export default function ProductVideoSection({
       <div className="container">
         <div className="split-head">
           <Reveal>
-            <SectionLabel>{t.label}</SectionLabel>
             <Title lines={t.title} accentFrom={t.accentFrom} id="film-title" />
           </Reveal>
           <Reveal className="split-head__side" delay={120}>
@@ -52,11 +51,7 @@ export default function ProductVideoSection({
                 <span className="film__play" aria-hidden="true">
                   <PlayGlyph size={26} />
                 </span>
-                <span className="film__watch">{t.watch} &nbsp;/&nbsp; 01</span>
-              </span>
-              <span className="film__corners" aria-hidden="true">
-                <span dir="ltr">{t.corner}</span>
-                <span>{t.product}</span>
+                <span className="film__watch">{t.watch}</span>
               </span>
             </button>
           )}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { site } from "@/content/site";
 import type { ReactNode } from "react";
 
 /** "— 01 / THE CHALLENGE" label with the thin turquoise rule from the Figma. */
@@ -83,10 +84,15 @@ export function Button({ href, children, variant = "primary", icon = "arrow", cl
 }
 
 /**
- * Temporary text wordmark. Replace with the official MIA Robotics vector logo once supplied
- * (drop the SVG in /public/brand and render it here).
+ * MIA Robotics logo. Uses the official file from site.logo when set,
+ * otherwise a temporary text wordmark.
  */
 export function Logo({ tone = "light" }: { tone?: "light" | "dark" }) {
+  if (site.logo) {
+    const src = tone === "dark" && site.logo.dark ? site.logo.dark : site.logo.light;
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img className="logo-img" src={src} alt="MIA Robotics" width={site.logo.width} height={site.logo.height} />;
+  }
   return (
     <span className={`logo logo--${tone}`} dir="ltr">
       <svg className="logo__mark" width="26" height="16" viewBox="0 0 26 16" aria-hidden="true">

@@ -7,7 +7,7 @@ import CinematicHero from "@/components/CinematicHero";
 import ProductVideoSection from "@/components/ProductVideoSection";
 import AdaptiveTiltExplainer from "@/components/AdaptiveTiltExplainer";
 import SteeringComparison from "@/components/SteeringComparison";
-import { BackedSection, ChallengeSection, FinalCTA, MissionApplicationsGrid, SteeringSection, Ticker } from "@/components/sections";
+import { BackedSection, ChallengeSection, FinalCTA, MissionApplicationsGrid, PayloadStrip, SteeringSection } from "@/components/sections";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -21,18 +21,22 @@ export default async function Home({ params }: Props) {
   const locale = (isLocale(lang) ? lang : "en") as Locale;
   const t = getDict(locale);
   const demo = href(locale, "contact");
+  const s = t.steering;
 
+  // Rhythm: black · light · black · charcoal · light · black · light · charcoal · black
   return (
     <>
       <CinematicHero t={t.hero} common={t.common} demoHref={demo} />
-      <Ticker items={t.ticker} />
       <ChallengeSection t={t.challenge} />
       <ProductVideoSection t={t.film} youtubeId={site.youtubeId} locale={locale} />
       <AdaptiveTiltExplainer t={t.tilt} cta={t.common.explorePlatform} ctaHref={href(locale, "platform")} />
-      <SteeringSection t={t.steering} cta={t.common.seeHowItMoves} ctaHref={`${href(locale, "platform")}#maneuver`}>
-        <SteeringComparison labels={{ standard: t.steering.standard, mia: t.steering.mia, replay: t.steering.replay, title: t.steering.svgTitle }} />
+      <SteeringSection t={s} cta={t.common.seeHowItMoves} ctaHref={`${href(locale, "platform")}#maneuver`}>
+        <SteeringComparison
+          labels={{ standard: s.standard, mia: s.mia, radius: s.radius, robot: s.robot, scale: s.scale, replay: s.replay, title: s.svgTitle }}
+        />
       </SteeringSection>
-      <MissionApplicationsGrid t={t.missions} concept={t.common.conceptVisual} />
+      <PayloadStrip t={t.payload} />
+      <MissionApplicationsGrid t={t.missions} />
       <BackedSection t={t.backed} />
       <FinalCTA t={t.finalCta} cta={t.common.requestDemo} ctaHref={demo} />
     </>

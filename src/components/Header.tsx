@@ -68,7 +68,7 @@ export default function Header({ locale, t }: { locale: Locale; t: Dict["nav"] }
         {t.skip}
       </a>
       <div className="site-header__inner">
-        <Link href={href(locale, "home")} className="site-header__logo" aria-label="MIA Robotics — home">
+        <Link href={href(locale, "home")} className="site-header__logo" aria-label="MIA Robotics home">
           <Logo />
         </Link>
 

@@ -26,14 +26,13 @@ export default function Footer({ locale, t, nav }: { locale: Locale; t: Dict["fo
             <h2 className="site-footer__h">{t.connect}</h2>
             <ul>
               <li><Link href={href(locale, "contact")}>{nav.demo}</Link></li>
-              <li><Link href={href(locale, "contact", "request=datasheet")}>{locale === "he" ? "דף נתונים" : "Datasheet"}</Link></li>
+              <li><Link href={href(locale, "contact", "request=datasheet")}>{t.datasheet}</Link></li>
             </ul>
           </div>
         </div>
       </div>
       <div className="container site-footer__bottom">
         <p>© {year} {t.rights}</p>
-        <p className="site-footer__tech" dir="ltr">MIA R4X4 / Ground mobility platform</p>
       </div>
     </footer>
   );

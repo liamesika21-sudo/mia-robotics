@@ -1,6 +1,8 @@
 # MIA Robotics — website
 
-Bilingual (EN / HE) marketing site for **MIA Robotics** and the **MIA R4X4** UGV.
+Bilingual (EN / HE) marketing site for **MIA Robotics** and the **MIA R** UGV.
+
+Copy rules from the client: the model is always "MIA R"; no dashes, hyphens or slashes in site copy.
 Next.js 16 (App Router) · React 19 · TypeScript · plain CSS (design tokens in `src/styles/globals.css`).
 
 ## Run it
@@ -59,7 +61,13 @@ Content that needs client approval stays hidden until a switch is flipped:
   - poster images `public/images/hero-poster.webp` and `hero-poster-960.webp`
   - Suggested encode (10–20 s, no audio):
     `ffmpeg -i in.mp4 -an -t 16 -vf scale=1280:-2 -c:v libx264 -crf 30 -preset slow -pix_fmt yuv420p -movflags +faststart hero-1280.mp4`
-- **Logos:** `Logo` and `DynamicsMark` in `src/components/ui.tsx` are temporary text wordmarks. Replace them with the official SVGs when they arrive.
+- **Logo:** put the official SVG in `public/brand/` and set `logo` in `src/content/site.ts`
+  (e.g. `{ light: "/brand/mia-robotics.svg", width: 160, height: 28 }`). Until then a text wordmark is shown.
+- **Tilt illustration (front view):** when the client's animation is ready, put it in `public/video/` and set
+  `tiltIllustration: { src: "/video/tilt-front.mp4", poster: "/images/tilt-front.webp" }` in `site.ts`.
+  It replaces the schematic in both places and is scrubbed by scroll.
+- **Steering circles:** robot size and turning radii (740 × 1,460 mm; 1,600 / 820 mm) are in
+  `src/components/SteeringComparison.tsx` and are drawn to one shared scale.
 
 ## Architecture
 

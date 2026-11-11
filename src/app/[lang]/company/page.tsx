@@ -5,8 +5,8 @@ import { site } from "@/content/site";
 import { href, isLocale, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 import Reveal from "@/components/Reveal";
-import { Button, DynamicsMark, Logo, SectionLabel, Title } from "@/components/ui";
-import { Pillars, TeamGrid } from "@/components/sections";
+import { Button, DynamicsMark, Logo, Title } from "@/components/ui";
+import { TeamGrid } from "@/components/sections";
 
 type Props = { params: Promise<{ lang: string }> };
 
@@ -28,7 +28,6 @@ export default async function CompanyPage({ params }: Props) {
         <span className="c-hero__type" aria-hidden="true" dir="ltr">MIA</span>
         <span className="final__lines" aria-hidden="true" />
         <div className="container c-hero__inner">
-          <SectionLabel className="label--light">{C.hero.label}</SectionLabel>
           <Title as="h1" lines={C.hero.title} accentFrom={C.hero.accentFrom} className="display--hero" id="c-hero-title" />
         </div>
       </section>
@@ -36,7 +35,6 @@ export default async function CompanyPage({ params }: Props) {
       <section className="section section--light about" aria-labelledby="about-title">
         <div className="container about__grid">
           <Reveal className="about__copy">
-            <SectionLabel>{C.about.label}</SectionLabel>
             <Title lines={C.about.title} accentFrom={C.about.accentFrom} id="about-title" />
             <p className="lead lead--rule">{C.about.body[0]}</p>
             <p className="body-l">{C.about.body[1]}</p>
@@ -50,7 +48,6 @@ export default async function CompanyPage({ params }: Props) {
       <section className="section section--black group" aria-labelledby="group-title">
         <div className="container">
           <Reveal>
-            <SectionLabel>{C.group.label}</SectionLabel>
             <Title lines={C.group.title} accentFrom={C.group.accentFrom} id="group-title" />
           </Reveal>
           <Reveal className="relation" delay={100}>
@@ -66,7 +63,9 @@ export default async function CompanyPage({ params }: Props) {
               <span>{C.group.childRole}</span>
             </div>
           </Reveal>
-          <Pillars items={C.group.pillars} dark />
+          <Reveal className="group__body">
+            <p className="lead">{C.group.body}</p>
+          </Reveal>
         </div>
       </section>
 
@@ -75,7 +74,6 @@ export default async function CompanyPage({ params }: Props) {
       <section className={`section ${site.teamApproved ? "section--black" : "section--light"} investors`} aria-labelledby="inv-title">
         <div className="container investors__inner">
           <Reveal>
-            <SectionLabel>{C.investors.label}</SectionLabel>
             <Title lines={C.investors.title} accentFrom={C.investors.accentFrom} id="inv-title" />
           </Reveal>
           <Reveal className="investors__side" delay={120}>

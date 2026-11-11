@@ -98,13 +98,9 @@ export default function CinematicHero({
       </div>
 
       <div className="container hero__content">
-        <p className="label label--light hero__overline">
-          <span className="label__rule" aria-hidden="true" />
-          <span>{t.overline}</span>
-        </p>
         <h1 className="display display--hero" id="hero-title">
           {t.lines.map((l, i) => (
-            <span key={i} className={`display__line hero__line${i === t.accentLine ? " is-accent" : ""}`} style={{ animationDelay: `${120 + i * 110}ms` }}>
+            <span key={i} className={`display__line hero__line${i === t.accentLine ? " is-accent" : ""}`} style={{ animationDelay: `${120 + i * 120}ms` }}>
               {l}
             </span>
           ))}
@@ -118,26 +114,17 @@ export default function CinematicHero({
         </div>
       </div>
 
-      <div className="container hero__foot">
-        <span dir="ltr" className="hero__tech">{t.techLine}</span>
-        <span className="hero__real">
-          {t.realWorld[0]} <b>{t.realWorld[1]}</b>
-        </span>
-        <span className="hero__controls">
-          {enabled && (
-            <button type="button" className="hero__pause" onClick={toggle} aria-label={playing ? "Pause background video" : "Play background video"}>
-              {playing ? (
-                <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1h2v8H2zM6 1h2v8H6z" fill="currentColor" /></svg>
-              ) : (
-                <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1v8l7-4z" fill="currentColor" /></svg>
-              )}
-            </button>
-          )}
-          <a href="#main-start" className="hero__scroll">
-            {common.scroll} <span aria-hidden="true">↓</span>
-          </a>
-        </span>
-      </div>
+      {enabled && (
+        <div className="container hero__foot">
+          <button type="button" className="hero__pause" onClick={toggle} aria-label={playing ? "Pause background video" : "Play background video"}>
+            {playing ? (
+              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1h2v8H2zM6 1h2v8H6z" fill="currentColor" /></svg>
+            ) : (
+              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1v8l7-4z" fill="currentColor" /></svg>
+            )}
+          </button>
+        </div>
+      )}
     </section>
   );
 }

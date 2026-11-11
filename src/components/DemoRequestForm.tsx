@@ -171,7 +171,7 @@ function Field({
     <div className={`field${wide ? " field--wide" : ""}${error ? " has-error" : ""}`}>
       <label htmlFor={id} className="field__label">
         {label}
-        {required ? <span className="field__req" aria-hidden="true"> *</span> : hint ? <span className="field__hint"> — {hint}</span> : null}
+        {required ? <span className="field__req" aria-hidden="true"> *</span> : hint ? <span className="field__hint"> ({hint})</span> : null}
       </label>
       {children}
       {error && (

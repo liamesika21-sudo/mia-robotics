@@ -26,6 +26,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  experimental: { globalNotFound: true },
   images: { formats: ["image/avif", "image/webp"] },
   async redirects() {
     return [{ source: "/", destination: "/en", permanent: false }];

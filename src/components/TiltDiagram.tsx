@@ -5,6 +5,8 @@
  * Pure render: the caller supplies `progress` (0 → 1). Illustrative only, no real dimensions.
  */
 
+import { rtlIsolate } from "./ui";
+
 const W = 800;
 const H = 440;
 const GROUND = 396;
@@ -30,8 +32,8 @@ export default function TiltDiagram({
   tone?: "dark" | "light";
 }) {
   const p = clamp(progress);
-  const stepIn = ease(clamp(p / 0.16)); // block slides in under the right wheel
-  const lift = ease(clamp((p - 0.14) / 0.4)) * STEP; // right wheel climbs
+  // The step rises out of the ground directly under the right wheel and lifts the wheel with it.
+  const lift = ease(clamp((p - 0.1) / 0.44)) * STEP;
 
   const cx = W / 2;
   const lx = cx - TRACK / 2;
@@ -86,9 +88,9 @@ export default function TiltDiagram({
 
       {/* Ground + step block under the right wheel */}
       <rect x="0" y={GROUND} width={W} height={H - GROUND} fill="url(#tiltHatch)" />
-      <g transform={`translate(${(1 - stepIn) * 300} 0)`} opacity={stepIn}>
-        <rect x={rx - 84} y={GROUND - STEP} width="190" height={STEP} fill={dark ? "#1b2427" : "#e9eef0"} stroke={groundCol} strokeWidth="3" />
-      </g>
+      {lift > 0.5 && (
+        <rect x={rx - 84} y={GROUND - lift} width="168" height={lift} fill={dark ? "#1b2427" : "#e9eef0"} stroke={groundCol} strokeWidth="3" />
+      )}
       <line x1="0" x2={W} y1={GROUND} y2={GROUND} stroke={groundCol} strokeWidth="4" />
 
       {/* Ground angle: line through both hubs (follows the terrain) */}
@@ -106,7 +108,7 @@ export default function TiltDiagram({
       {/* Level reference on the deck */}
       <line x1="24" x2={W - 24} y1={deckY} y2={deckY} stroke={accent} strokeWidth="1.5" strokeDasharray="7 7" opacity=".85" />
       <text x={W - 24} y={deckY - 12} textAnchor="end" className="tilt-svg__ref" fill={accent}>
-        {labels.levelRef}
+        {rtlIsolate(labels.levelRef)}
       </text>
 
       {/* Suspension arms + shock absorbers */}
@@ -152,7 +154,7 @@ export default function TiltDiagram({
       <line x1={cx + 97} x2={cx + 97} y1={deckY - 40} y2={deckY - 74} stroke={accent} strokeWidth="2" />
       <circle cx={cx + 97} cy={deckY - 78} r="4" fill={accent} />
       <text x={cx - 140} y={deckY - 18} className="tilt-svg__plat" fill={accent}>
-        {labels.platform}
+        {rtlIsolate(labels.platform)}
       </text>
 
       {showParts && (
@@ -164,7 +166,7 @@ export default function TiltDiagram({
       )}
 
       <text x="24" y={H - 14} className="tilt-svg__note" fill={ink} opacity=".75">
-        {labels.chassis}
+        {rtlIsolate(labels.chassis)}
       </text>
     </svg>
   );

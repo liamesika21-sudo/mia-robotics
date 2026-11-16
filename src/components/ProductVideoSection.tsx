@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Dict } from "@/content";
-import { Title, PlayGlyph } from "./ui";
+import { Button, Title, PlayGlyph } from "./ui";
 import Reveal from "./Reveal";
 
 /**
@@ -13,10 +13,14 @@ export default function ProductVideoSection({
   t,
   youtubeId,
   locale,
+  ctaLabel,
+  ctaHref,
 }: {
   t: Dict["film"];
   youtubeId: string;
   locale: string;
+  ctaLabel: string;
+  ctaHref: string;
 }) {
   const [active, setActive] = useState(false);
   const src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&hl=${locale}`;
@@ -55,6 +59,13 @@ export default function ProductVideoSection({
               </span>
             </button>
           )}
+        </Reveal>
+
+        <Reveal className="film__cta">
+          <p className="film__cta-line">{t.liveLine}</p>
+          <Button href={ctaHref} variant="ghost">
+            {ctaLabel}
+          </Button>
         </Reveal>
       </div>
     </section>

@@ -4,14 +4,23 @@
  */
 export const site = {
   name: "MIA Robotics",
-  url: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, ""),
+  /**
+   * Public address used for canonical, og:url, og:image, hreflang, robots.txt and sitemap.xml.
+   * Order: NEXT_PUBLIC_SITE_URL (set this once the custom domain is live), then the production
+   * domain Vercel exposes at build time, then a local fallback for `npm run dev`.
+   */
+  url: (
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "") ||
+    "https://mia-robotics.vercel.app"
+  ).replace(/\/$/, ""),
 
   /** Full product film on YouTube (lazy-loaded, privacy-enhanced embed). */
   youtubeId: "5NRKtT-eUHc",
 
   /**
-   * Hebrew copy is a DRAFT until the client approves it. While false:
-   * Hebrew pages are noindex, excluded from the sitemap and hreflang, and show a draft notice.
+   * Hebrew copy is a DRAFT until the client approves it. While false, Hebrew pages are noindex and
+   * show a draft notice. They are listed in the sitemap and hreflang either way (client request, 16 Nov).
    */
   hebrewApproved: false,
 

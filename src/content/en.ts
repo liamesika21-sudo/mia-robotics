@@ -66,6 +66,7 @@ const en = {
     play: "Play the MIA R product film",
     watch: "Watch the full film",
     posterAlt: "MIA R carrying a payload over rocky ground",
+    liveLine: "Seen it on film. See it live.",
   },
 
   tilt: {
@@ -117,14 +118,14 @@ const en = {
     accentFrom: 1,
     side: "A modular ground mobility layer for critical field tasks, with flexibility for different operational environments.",
     items: [
-      { n: "01", t: "Remote operations" },
-      { n: "02", t: "Payload mobility" },
-      { n: "03", t: "Casualty evacuation" },
-      { n: "04", t: "Patrol and security" },
-      { n: "05", t: "Tight space mobility" },
-      { n: "06", t: "Area reconnaissance" },
+      { n: "01", t: "Payload mobility", img: "/images/mission-02.webp", alt: "MIA R carrying a mission payload" },
+      { n: "02", t: "Casualty evacuation", img: "/images/mission-03.webp", alt: "MIA R configured to evacuate a casualty" },
+      { n: "03", t: "Patrol and security", img: "/images/mission-04.webp", alt: "MIA R on a patrol and security mission" },
+      { n: "04", t: "Area reconnaissance", img: "/images/mission-06.webp", alt: "MIA R on an area reconnaissance mission" },
+      { n: "05", t: "Infrastructure inspection", img: "/images/mission-infrastructure.webp", alt: "MIA R with a camera mast inspecting an electrical substation" },
+      { n: "06", t: "Wildfire support", img: "/images/mission-wildfire.webp", alt: "MIA R carrying firefighting equipment beside a wildfire crew" },
     ],
-    civilian: "Critical infrastructure and energy, agriculture, construction, campus logistics, search and rescue.",
+    civilian: "Agriculture, construction, campus logistics, search and rescue.",
     civilianLead: "Also for civilian work:",
     notice: "Images are for illustration purposes only. Availability and configurations are subject to confirmation.",
   },
@@ -140,6 +141,7 @@ const en = {
     accentFrom: 1,
     body: "Book a live demonstration with our team.",
     emailLabel: "Or write to us",
+    imageAlt: "The black MIA R parked on a concrete curb",
   },
 
   platform: {
@@ -245,7 +247,9 @@ const en = {
       message: "Message",
       optional: "Optional",
       datasheet: "Send me the datasheet",
+      updates: "Keep me updated on MIA Robotics news",
       submit: "Request a demo",
+      submitNeutral: "Send request",
       sending: "Sending…",
       success: "Thanks, our team will get back to you shortly.",
       areas: [
@@ -268,7 +272,8 @@ const en = {
         notConfigured: "The form isn't connected yet. Your request was not sent.",
         rate: "Too many requests. Please wait a few minutes and try again.",
       },
-      privacy: "We use your details only to respond to this request.",
+      privacy:
+        "We use your details to respond to your request. If you ticked the box, we will also send you occasional MIA Robotics updates. You can unsubscribe at any time.",
     },
   },
 
@@ -281,6 +286,12 @@ const en = {
   },
 
   draftNotice: "",
+
+  notFound: {
+    title: ["Page not", "found."],
+    body: "The page you're looking for doesn't exist or has moved.",
+    home: "Back to the home page",
+  },
 };
 
 export default en;

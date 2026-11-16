@@ -31,6 +31,8 @@ export type ContactInput = {
   phone?: string;
   message?: string;
   datasheet?: boolean;
+  /** Opt in to MIA Robotics news. Optional, never pre-ticked. */
+  updates?: boolean;
 };
 
 export type FieldError = "required" | "email" | "phone" | "tooLong";

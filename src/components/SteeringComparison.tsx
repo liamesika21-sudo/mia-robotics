@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/lib/useScrollProgress";
+import { rtlIsolate } from "./ui";
 
 /**
  * Turning circles drawn TO SCALE (units = millimetres) next to the robot.
@@ -96,7 +97,7 @@ function CirclePanel({ kind, R, label, progress, tone, radiusLabel }: { kind: "s
         </g>
         <circle cx={C} cy={C} r="46" fill={ring} />
         <text x={C + 90} y={C + 260} className="circle-panel__r" fill={txt}>
-          R {label.r}
+          {rtlIsolate(`R ${label.r}`)}
         </text>
       </svg>
       <figcaption>

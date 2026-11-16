@@ -6,8 +6,11 @@ import { href, locales, type Locale, type PageKey } from "./i18n";
 export function pageMetadata(locale: Locale, page: PageKey): Metadata {
   const t = getDict(locale).meta[page];
   const url = `${site.url}${href(locale, page)}`;
-  const languages: Record<string, string> = { en: `${site.url}${href("en", page)}`, "x-default": `${site.url}${href("en", page)}` };
-  if (site.hebrewApproved) languages.he = `${site.url}${href("he", page)}`;
+  const languages: Record<string, string> = {
+    en: `${site.url}${href("en", page)}`,
+    he: `${site.url}${href("he", page)}`,
+    "x-default": `${site.url}${href("en", page)}`,
+  };
   const draftHe = locale === "he" && !site.hebrewApproved;
   return {
     metadataBase: new URL(site.url),

@@ -25,7 +25,6 @@ export default function Footer({ locale, t, nav }: { locale: Locale; t: Dict["fo
           <div>
             <h2 className="site-footer__h">{t.connect}</h2>
             <ul>
-              <li><Link href={href(locale, "contact")}>{nav.demo}</Link></li>
               <li><Link href={href(locale, "contact", "request=datasheet")}>{t.datasheet}</Link></li>
             </ul>
           </div>

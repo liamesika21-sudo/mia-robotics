@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { AREA_LABEL_EN, validateContact, type AreaKey, type ContactInput } from "@/lib/contact";
+import { saveLead, storageConfigured, type Lead } from "@/lib/leads";
+import { getDict } from "@/content";
 
 /**
  * Demo / datasheet request endpoint.
@@ -63,6 +65,7 @@ export async function POST(req: NextRequest) {
     phone: clean(body.phone, 40),
     message: clean(body.message, 4000),
     datasheet: body.datasheet === true,
+    updates: body.updates === true,
   };
   const fields = validateContact(input);
   if (Object.keys(fields).length) return NextResponse.json({ ok: false, error: "invalid", fields }, { status: 422 });
@@ -74,7 +77,36 @@ export async function POST(req: NextRequest) {
   }
 
   const area = AREA_LABEL_EN[input.area as AreaKey];
-  const locale = body.locale === "he" ? "HE" : "EN";
+  const lang = body.locale === "he" ? "he" : "en";
+  const locale = lang.toUpperCase();
+  const now = new Date().toISOString();
+
+  // Keep every request with its consent answer and timestamp (see lib/leads.ts).
+  const lead: Lead = {
+    id: crypto.randomUUID(),
+    receivedAt: now,
+    name: input.name,
+    organization: input.organization,
+    email: input.email,
+    phone: input.phone || "",
+    area: input.area,
+    datasheet: !!input.datasheet,
+    message: input.message || "",
+    locale: lang,
+    updatesConsent: !!input.updates,
+    updatesConsentAt: input.updates ? now : null,
+    noticeShown: getDict(lang).contact.form.privacy,
+  };
+  let stored = "Not configured";
+  if (storageConfigured()) {
+    try {
+      await saveLead(lead);
+      stored = "Yes";
+    } catch (err) {
+      console.error("[contact] Lead storage failed", err);
+      stored = "FAILED: add this request to the list manually";
+    }
+  }
   const subject = `${input.datasheet ? "Demo + datasheet request" : "Demo request"} — ${input.organization} (${area})`;
   const rows: [string, string][] = [
     ["Name", input.name],
@@ -83,6 +115,8 @@ export async function POST(req: NextRequest) {
     ["Phone", input.phone || "—"],
     ["Area of use", area],
     ["Datasheet requested", input.datasheet ? "YES — review and send manually" : "No"],
+    ["News updates consent", input.updates ? `Yes (given ${now} UTC)` : "No"],
+    ["Saved to lead list", stored],
     ["Site language", locale],
     ["Message", input.message || "—"],
   ];

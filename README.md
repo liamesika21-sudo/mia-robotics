@@ -32,11 +32,24 @@ Node 20.9+ is required. Fonts are self-hosted (`src/fonts`), so the build needs 
 
 | Variable | Purpose |
 |---|---|
-| `NEXT_PUBLIC_SITE_URL` | Production domain, e.g. `https://www.miarobotics.com`. Used for canonical, hreflang, sitemap, OG. |
+| `NEXT_PUBLIC_SITE_URL` | Production domain, e.g. `https://www.miarobotics.com`. Used for canonical, hreflang, sitemap, OG. If unset on Vercel, the project's production domain is used (`VERCEL_PROJECT_PRODUCTION_URL`). |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Lead storage (Upstash Redis via the Vercel Marketplace). Every request is saved with its news-updates consent (yes/no) and timestamp. |
+| `LEADS_EXPORT_PASSWORD` | Turns on the CSV export (HTTP Basic auth, any username). |
 | `RESEND_API_KEY` | API key from [resend.com](https://resend.com) (the sending domain must be verified there). |
 | `CONTACT_TO_EMAIL` | The verified MIA recipient (comma-separated for several). |
 | `CONTACT_FROM_EMAIL` | Sender on the verified domain, e.g. `MIA Website <web@miarobotics.com>`. |
 | `NEXT_PUBLIC_INVESTORS_EMAIL` | Verified investors address. Empty = the Investors button goes to the contact form. |
+
+### Leads and the news-updates list
+
+The form has an optional, unticked box "Keep me updated on MIA Robotics news". Every request is stored with
+`updatesConsent` (yes/no), `updatesConsentAt` (UTC) and the exact notice the visitor saw. The team email shows
+the same two fields.
+
+- `/api/leads/export`: CSV of people who ticked the box (name, organization, email, phone, consent date).
+- `/api/leads/export?all=1`: every request, with the consent column.
+
+Both ask for the `LEADS_EXPORT_PASSWORD`. The CSV opens in Excel with Hebrew intact.
 
 If any of the three contact variables is missing, the form shows an error ("The form isn't connected yet") and **never** a false success. The visitor gets no automatic email.
 

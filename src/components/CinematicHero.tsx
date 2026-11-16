@@ -75,7 +75,7 @@ export default function CinematicHero({
   };
 
   return (
-    <section className="hero" aria-labelledby="hero-title">
+    <section className="hero" aria-labelledby="hero-title" data-hero>
       <div className="hero__media">
         <picture>
           <source media="(max-width: 760px)" srcSet="/images/hero-poster-960.webp" />

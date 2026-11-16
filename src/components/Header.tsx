@@ -13,16 +13,31 @@ const pages: PageKey[] = ["home", "platform", "company", "contact"];
 export default function Header({ locale, t }: { locale: Locale; t: Dict["nav"] }) {
   const pathname = usePathname() || `/${locale}`;
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [open, setOpen] = useState(false);
   const menuBtn = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
 
+  // Desktop header CTA: on Home and Platform it appears only once the visitor has scrolled past
+  // the opening section (that section has its own CTA). It is never shown on Contact.
+  const onContact = pathname.startsWith(href(locale, "contact"));
+  const heroGated = pathname === href(locale, "home") || pathname.startsWith(href(locale, "platform"));
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+      const hero = document.querySelector<HTMLElement>("[data-hero]");
+      setPastHero(!hero || hero.getBoundingClientRect().bottom <= 80);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
+  const ctaHidden = heroGated && !pastHero;
 
   // Close the mobile menu on navigation.
   useEffect(() => setOpen(false), [pathname]);
@@ -86,10 +101,17 @@ export default function Header({ locale, t }: { locale: Locale; t: Dict["nav"] }
 
         <div className="site-header__actions">
           <LanguageSwitcher locale={locale} label={t.langLabel} />
-          <Link href={href(locale, "contact")} className="btn btn--primary btn--sm site-header__cta">
-            <span>{t.demo}</span>
-            <Arrow />
-          </Link>
+          {!onContact && (
+            <Link
+              href={href(locale, "contact")}
+              className={`btn btn--primary btn--sm site-header__cta${ctaHidden ? " is-hidden" : ""}`}
+              aria-hidden={ctaHidden || undefined}
+              tabIndex={ctaHidden ? -1 : undefined}
+            >
+              <span>{t.demo}</span>
+              <Arrow />
+            </Link>
+          )}
           <button
             ref={menuBtn}
             type="button"

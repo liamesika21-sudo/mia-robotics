@@ -12,6 +12,16 @@ export function SectionLabel({ children, className = "" }: { children: ReactNode
   );
 }
 
+const HEBREW = /[\u0590-\u05FF]/;
+
+/**
+ * Wrap Hebrew text in a right-to-left isolate (RLI … PDI). SVG <text> lays text out left to right,
+ * so without this the final full stop and mixed Latin/number runs land on the wrong side.
+ */
+export function rtlIsolate(s: string) {
+  return HEBREW.test(s) ? `\u2067${s}\u2069` : s;
+}
+
 /** Editorial heading: lines from `accentFrom` onward are turquoise. */
 export function Title({
   lines,
@@ -30,7 +40,9 @@ export function Title({
     <Tag className={`display ${className}`} id={id}>
       {lines.map((l, i) => (
         <span key={i} className={`display__line${accentFrom !== undefined && i >= accentFrom ? " is-accent" : ""}`}>
-          {l}
+          {/* An all-Latin line inside a Hebrew heading ("MIA Dynamics.") is isolated as LTR,
+              so its full stop stays after the word instead of jumping to the left. */}
+          {HEBREW.test(l) ? l : <span dir="ltr">{l}</span>}
         </span>
       ))}
     </Tag>

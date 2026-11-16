@@ -15,13 +15,18 @@ export default function DemoRequestForm({ t, locale }: { t: Dict["contact"]["for
   const [status, setStatus] = useState<Status>("idle");
   const [serverMsg, setServerMsg] = useState("");
   const [datasheet, setDatasheet] = useState(false);
+  const [updates, setUpdates] = useState(false);
+  const [fromDatasheet, setFromDatasheet] = useState(false);
   const startedAt = useRef<number>(0);
   const summary = useRef<HTMLDivElement>(null);
   const success = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     startedAt.current = Date.now();
-    if (params?.get("request") === "datasheet") setDatasheet(true);
+    if (params?.get("request") === "datasheet") {
+      setDatasheet(true);
+      setFromDatasheet(true);
+    }
   }, [params]);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -36,6 +41,7 @@ export default function DemoRequestForm({ t, locale }: { t: Dict["contact"]["for
       phone: String(fd.get("phone") || ""),
       message: String(fd.get("message") || ""),
       datasheet,
+      updates,
     };
     const errs = validateContact(data);
     setErrors(errs);
@@ -139,9 +145,15 @@ export default function DemoRequestForm({ t, locale }: { t: Dict["contact"]["for
         <span>{t.datasheet}</span>
       </label>
 
+      <label className="check">
+        <input type="checkbox" name="updates" checked={updates} onChange={(e) => setUpdates(e.target.checked)} />
+        <span className="check__box" aria-hidden="true" />
+        <span>{t.updates}</span>
+      </label>
+
       <div className="form__foot">
         <button type="submit" className="btn btn--primary btn--lg" disabled={status === "sending"} aria-busy={status === "sending"}>
-          <span>{status === "sending" ? t.sending : t.submit}</span>
+          <span>{status === "sending" ? t.sending : fromDatasheet || datasheet ? t.submitNeutral : t.submit}</span>
           <Arrow />
         </button>
         <p id="form-privacy" className="form__privacy">{t.privacy}</p>

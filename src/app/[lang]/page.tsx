@@ -28,7 +28,7 @@ export default async function Home({ params }: Props) {
     <>
       <CinematicHero t={t.hero} common={t.common} demoHref={demo} />
       <ChallengeSection t={t.challenge} />
-      <ProductVideoSection t={t.film} youtubeId={site.youtubeId} locale={locale} />
+      <ProductVideoSection t={t.film} youtubeId={site.youtubeId} locale={locale} ctaLabel={t.common.requestDemo} ctaHref={demo} />
       <AdaptiveTiltExplainer t={t.tilt} cta={t.common.explorePlatform} ctaHref={href(locale, "platform")} />
       <SteeringSection t={s} cta={t.common.seeHowItMoves} ctaHref={`${href(locale, "platform")}#maneuver`}>
         <SteeringComparison

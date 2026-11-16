@@ -108,8 +108,8 @@ export function MissionApplicationsGrid({ t }: { t: Dict["missions"] }) {
               </div>
               <div className="mission__frame">
                 <Image
-                  src={`/images/mission-0${i + 1}.webp`}
-                  alt=""
+                  src={m.img}
+                  alt={m.alt}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
                   className="mission__img"
@@ -146,11 +146,10 @@ export function BackedSection({ t }: { t: Dict["backed"] }) {
 export function FinalCTA({ t, cta, ctaHref }: { t: Dict["finalCta"]; cta: string; ctaHref: string }) {
   const email = site.contactEmail;
   return (
-    <section className="section section--black final" aria-labelledby="final-title">
-      <span className="final__type" aria-hidden="true" dir="ltr">MIA R</span>
+    <section className="section section--black final final--media" aria-labelledby="final-title">
       <span className="final__lines" aria-hidden="true" />
-      <div className="container final__inner">
-        <Reveal>
+      <div className="container final__inner final__grid">
+        <Reveal className="final__copy">
           <Title lines={t.title} accentFrom={t.accentFrom} id="final-title" />
           <p className="lead">{t.body}</p>
           <div className="btn-row">
@@ -164,6 +163,15 @@ export function FinalCTA({ t, cta, ctaHref }: { t: Dict["finalCta"]; cta: string
               </a>
             </p>
           )}
+        </Reveal>
+        <Reveal className="final__media" delay={120}>
+          <Image
+            src="/images/r4x4-curb.webp"
+            alt={t.imageAlt}
+            width={987}
+            height={1207}
+            sizes="(max-width: 900px) 100vw, 40vw"
+          />
         </Reveal>
       </div>
     </section>
@@ -186,7 +194,7 @@ export function PlatformHero({
   datasheetHref: string;
 }) {
   return (
-    <section className="section section--black p-hero" aria-labelledby="p-hero-title">
+    <section className="section section--black p-hero" aria-labelledby="p-hero-title" data-hero>
       <div className="p-hero__glow" aria-hidden="true" />
       <div className="container p-hero__grid">
         <div className="p-hero__copy">

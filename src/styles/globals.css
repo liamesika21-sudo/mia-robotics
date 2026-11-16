@@ -831,7 +831,7 @@ main:focus {
   justify-content: flex-end;
   align-items: center;
   gap: 16px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.19em;
   text-transform: uppercase;
   color: var(--text-2);
@@ -1109,7 +1109,7 @@ main:focus {
   position: absolute;
   inset-inline-start: 22px;
   bottom: 14px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.17em;
   text-transform: uppercase;
   color: #50676b;
@@ -2590,14 +2590,14 @@ main:focus {
     gap: 10px;
   }
   .circle-panel__t {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.06em;
   }
   .film__corners {
     display: none;
   }
   .film__watch {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.2em;
   }
   .film__frame {
@@ -2619,7 +2619,7 @@ main:focus {
     top: 12px;
   }
   .diagram__note {
-    font-size: 9px;
+    font-size: 12px;
     inset-inline-start: 14px;
   }
   .tilt {
@@ -2712,5 +2712,127 @@ main:focus {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ---------- Revisions 16 Nov 2026 ---------- */
+
+/* Header CTA: hidden until the visitor scrolls past the opening section (Home, Platform). */
+.site-header__cta {
+  transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+}
+.site-header__cta.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-6px);
+}
+
+/* Quiet CTA under the film */
+.film__cta {
+  margin-top: clamp(28px, 4vw, 44px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line-dark);
+}
+.film__cta-line {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.1;
+  color: #fff;
+}
+
+/* Closing section with the robot photo */
+.final__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: center;
+}
+.final__media {
+  position: relative;
+  border: 1px solid var(--line-dark);
+  overflow: hidden;
+  background: var(--surface);
+}
+.final__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 987 / 1207;
+  object-fit: cover;
+}
+@media (max-width: 900px) {
+  .final__grid {
+    grid-template-columns: 1fr;
+  }
+  .final.final--media {
+    padding-top: clamp(96px, 16vw, 140px);
+  }
+  .final__media {
+    max-width: 520px;
+  }
+}
+
+/* Two consent boxes stack */
+.form .check {
+  display: flex;
+}
+.form .check + .check {
+  margin-top: 4px;
+}
+
+/* 404 (bilingual) */
+.nf {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+  background: var(--black, #030607);
+  color: #fff;
+  padding-block: 64px;
+}
+.nf__inner {
+  position: relative;
+}
+.nf__logo {
+  display: inline-block;
+  margin-bottom: clamp(32px, 6vw, 64px);
+}
+.nf__code {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(120px, 22vw, 300px);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(0, 213, 204, 0.7);
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+.nf__langs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 80px);
+  border-top: 1px solid var(--line-dark);
+  padding-top: clamp(28px, 4vw, 44px);
+}
+.nf__lang .lead {
+  margin: 18px 0 28px;
+}
+.nf__lang[lang="he"] {
+  font-family: var(--font-hebrew), sans-serif;
+}
+.nf__lang[lang="he"] .display {
+  font-family: var(--font-hebrew), sans-serif;
+  font-weight: 800;
+}
+@media (max-width: 760px) {
+  .nf__langs {
+    grid-template-columns: 1fr;
   }
 }

@@ -1168,11 +1168,15 @@ main:focus {
 
 .tilt {
   padding: 0;
+}
+.tilt__track {
   height: 260vh;
 }
 .tilt.is-static {
-  height: auto;
   padding-block: var(--section-y);
+}
+.tilt.is-static .tilt__track {
+  height: auto;
 }
 .tilt__pin {
   position: sticky;
@@ -1195,6 +1199,77 @@ main:focus {
 }
 .tilt .display {
   font-size: clamp(48px, 6.4vw, 112px);
+}
+/* Right column: animation on top, the balance video loop underneath (two halves). */
+.tilt__visuals {
+  --half: calc((100vh - var(--header-h) - 104px) / 2);
+  display: grid;
+  grid-template-rows: var(--half) var(--half);
+  gap: 16px;
+  min-width: 0;
+}
+.tilt__diagram {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px clamp(14px, 2vw, 24px) 14px;
+  min-height: 0;
+}
+.tilt__diagram .tilt-svg {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+.tilt__diagram .diagram__progress {
+  flex: none;
+}
+.tilt.is-static .tilt__visuals {
+  --half: auto;
+  grid-template-rows: auto auto;
+}
+.tilt.is-static .tilt__diagram .tilt-svg {
+  height: auto;
+}
+.tilt__video-mobile {
+  display: none;
+}
+
+/* Balance video (home + platform) */
+.balance-video {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  aspect-ratio: 16 / 9;
+}
+.balance-video video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.balance-video__toggle {
+  position: absolute;
+  inset-inline-end: 12px;
+  bottom: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(3, 6, 7, 0.45);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.balance-video__toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.tilt__video--pinned {
+  aspect-ratio: auto;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .steps {
   margin-top: 30px;
@@ -1814,6 +1889,20 @@ main:focus {
   margin-top: 26px;
 }
 
+.caps__head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 32px clamp(32px, 5vw, 88px);
+  align-items: center;
+}
+.caps__video .balance-video {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+@media (max-width: 960px) {
+  .caps__head {
+    grid-template-columns: 1fr;
+  }
+}
 .caps__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2375,7 +2464,21 @@ main:focus {
     grid-template-columns: 1fr;
     gap: 28px;
   }
-  .tilt {
+  .tilt__visuals {
+    --half: auto;
+    grid-template-rows: auto;
+  }
+  .tilt__diagram .tilt-svg {
+    height: auto;
+  }
+  .tilt__video--pinned {
+    display: none;
+  }
+  .tilt__video-mobile {
+    display: block;
+    padding-bottom: var(--section-y);
+  }
+  .tilt__track {
     height: 230vh;
   }
   .tilt .body-l,
@@ -2622,7 +2725,7 @@ main:focus {
     font-size: 12px;
     inset-inline-start: 14px;
   }
-  .tilt {
+  .tilt__track {
     height: 220vh;
   }
   .tilt__pin {

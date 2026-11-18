@@ -85,6 +85,7 @@ const en = {
     svgTitle:
       "Front view diagram: MIA R drives forward and the wheel on one side climbs a step. That wheel rises on its suspension arms and both wheels stay upright, while the body and its top deck stay level with the horizontal reference line.",
     fieldAlt: "MIA R crossing uneven ground",
+    videoAlt: "Video: MIA R keeps its body level while its wheels follow uneven ground",
   },
 
   steering: {
@@ -173,6 +174,7 @@ const en = {
     capabilities: {
       title: ["Core", "capabilities."],
       accentFrom: 1,
+      videoAlt: "Video: MIA R driving over rocks, dirt and slopes",
       items: [
         { n: "01", t: "Front and rear steering", d: "Both axles steer for tighter turns and narrow paths." },
         { n: "02", t: "Adaptive tilt system", d: "Keeps the top platform level on uneven terrain." },

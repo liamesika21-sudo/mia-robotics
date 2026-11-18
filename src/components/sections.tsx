@@ -5,6 +5,7 @@ import { specs } from "@/content/specs";
 import { team } from "@/content/team";
 import type { Locale } from "@/lib/i18n";
 import Reveal from "./Reveal";
+import BalanceVideo from "./BalanceVideo";
 import { Button, DynamicsLogo, Title } from "./ui";
 
 /* ───────── Home ───────── */
@@ -221,9 +222,14 @@ export function TechnologyCapabilities({ t }: { t: Dict["platform"]["capabilitie
   return (
     <section className="section section--charcoal caps" aria-labelledby="caps-title">
       <div className="container">
-        <Reveal>
-          <Title lines={t.title} accentFrom={t.accentFrom} id="caps-title" />
-        </Reveal>
+        <div className="caps__head">
+          <Reveal>
+            <Title lines={t.title} accentFrom={t.accentFrom} id="caps-title" />
+          </Reveal>
+          <Reveal className="caps__video" delay={120}>
+            <BalanceVideo clip="power" label={t.videoAlt} />
+          </Reveal>
+        </div>
         <ul className="caps__grid">
           {t.items.map((c, i) => (
             <Reveal as="li" key={c.n} className="cap" delay={(i % 3) * 80}>

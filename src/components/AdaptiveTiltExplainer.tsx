@@ -4,6 +4,7 @@ import { useRef } from "react";
 import type { Dict } from "@/content";
 import { useScrollProgress, usePrefersReducedMotion } from "@/lib/useScrollProgress";
 import TiltVisual from "./TiltVisual";
+import BalanceVideo from "./BalanceVideo";
 import { Button, Title } from "./ui";
 
 /**
@@ -12,14 +13,15 @@ import { Button, Title } from "./ui";
  * With reduced motion it renders one static frame mid-climb (chassis tilted, platform level).
  */
 export default function AdaptiveTiltExplainer({ t, cta, ctaHref }: { t: Dict["tilt"]; cta: string; ctaHref: string }) {
-  const wrap = useRef<HTMLElement>(null);
+  const wrap = useRef<HTMLDivElement>(null);
   const reduce = usePrefersReducedMotion();
   const live = useScrollProgress(wrap, "sticky", reduce);
   const p = reduce ? 0.6 : live;
   const step = p < 0.14 ? 0 : p < 0.5 ? 1 : 2;
 
   return (
-    <section ref={wrap} className={`section section--charcoal tilt${reduce ? " is-static" : ""}`} aria-labelledby="tilt-title">
+    <section className={`section section--charcoal tilt${reduce ? " is-static" : ""}`} aria-labelledby="tilt-title">
+      <div ref={wrap} className="tilt__track">
       <div className="tilt__pin">
         <div className="container tilt__grid">
           <div className="tilt__copy">
@@ -43,17 +45,25 @@ export default function AdaptiveTiltExplainer({ t, cta, ctaHref }: { t: Dict["ti
             </Button>
           </div>
 
-          <figure className="diagram diagram--dark">
-            <span className="diagram__corner" aria-hidden="true" />
-            <TiltVisual
-              progress={p}
-              labels={{ levelRef: t.levelRef, platform: t.platform, chassis: t.chassis, title: t.svgTitle }}
-            />
-            <div className="diagram__progress" aria-hidden="true">
-              <span style={{ transform: `scaleX(${p})` }} />
-            </div>
-          </figure>
+          <div className="tilt__visuals">
+            <figure className="diagram diagram--dark tilt__diagram">
+              <span className="diagram__corner" aria-hidden="true" />
+              <TiltVisual
+                progress={p}
+                labels={{ levelRef: t.levelRef, platform: t.platform, chassis: t.chassis, title: t.svgTitle }}
+              />
+              <div className="diagram__progress" aria-hidden="true">
+                <span style={{ transform: `scaleX(${p})` }} />
+              </div>
+            </figure>
+            <BalanceVideo label={t.videoAlt} className="tilt__video tilt__video--pinned" />
+          </div>
         </div>
+      </div>
+      </div>
+      {/* On narrow screens the clip sits below the pinned diagram so the pin fits the screen. */}
+      <div className="container tilt__video-mobile">
+        <BalanceVideo label={t.videoAlt} className="tilt__video" />
       </div>
     </section>
   );

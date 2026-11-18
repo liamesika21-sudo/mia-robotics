@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getDict } from "@/content";
 import { href, isLocale, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/seo";
 import Reveal from "@/components/Reveal";
 import PlatformTilt from "@/components/PlatformTilt";
+import BalanceVideo from "@/components/BalanceVideo";
 import SteeringComparison from "@/components/SteeringComparison";
 import { Title } from "@/components/ui";
 import { DatasheetCTA, PlatformHero, ProductConfigurations, TechnicalSpecifications, TechnologyCapabilities } from "@/components/sections";
@@ -35,9 +35,7 @@ export default async function PlatformPage({ params }: Props) {
             {P.tilt.body.map((b, i) => (
               <p key={i} className="body-l">{b}</p>
             ))}
-            <div className="p-tilt__photo">
-              <Image src="/images/tilt-field.webp" alt={t.tilt.fieldAlt} width={1920} height={1080} sizes="(max-width: 900px) 100vw, 40vw" />
-            </div>
+            <BalanceVideo label={t.tilt.videoAlt} className="p-tilt__photo" />
           </Reveal>
           <PlatformTilt t={P.tilt} labels={t.tilt} />
         </div>
